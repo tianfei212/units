@@ -2,6 +2,7 @@ module github.com/tianfei212/units
 
 go 1.17
 
+
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

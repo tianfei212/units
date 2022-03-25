@@ -18,8 +18,8 @@ import (
 
 // Configer 定义配置文件接口，实现读取，写入，标签查找
 type Configer interface {
-	Read(Key string) map[string]interface{}
-	Write(Key, Value string) bool
+	Read(string) map[string]interface{}
+	Write(map[string]interface{}) bool
 }
 
 // ConfigF 定义结构体
@@ -30,8 +30,8 @@ type ConfigF struct {
 // 读的方法，需要传入Key（A.B、A）的结构
 func (Cf ConfigF) Read(Key string) map[string]interface{} {
 	var mConfig = make(map[string]interface{}, 2)
-	fmt.Println(Cf.FilePath)
-	fmt.Println(Key)
+	//fmt.Println(Cf.FilePath)
+	//fmt.Println(Key)
 	if FileHelpper.RextStr(Cf.FilePath) == "" {
 		fmt.Println("not file Config FIle!!!")
 		return mConfig
@@ -65,7 +65,7 @@ func (Cf ConfigF) Read(Key string) map[string]interface{} {
 }
 
 // 写的方法
-func (Cf ConfigF) Write(m map[string]string) bool {
+func (Cf ConfigF) Write(m map[string]interface{}) bool {
 	if FileHelpper.RextStr(Cf.FilePath) != "" {
 		viper.SetConfigFile(Cf.FilePath)
 		for k, v := range m {
