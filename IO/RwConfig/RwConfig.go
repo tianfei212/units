@@ -30,8 +30,8 @@ type ConfigF struct {
 // 读的方法，需要传入Key（A.B、A）的结构
 func (Cf ConfigF) Read(Key string) map[string]interface{} {
 	var mConfig = make(map[string]interface{}, 2)
-	fmt.Println(Cf.FilePath)
-	fmt.Println(Key)
+	//fmt.Println(Cf.FilePath)
+	//fmt.Println(Key)
 	if FileHelpper.RextStr(Cf.FilePath) == "" {
 		fmt.Println("not file Config FIle!!!")
 		return mConfig
