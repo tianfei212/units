@@ -41,6 +41,7 @@ func NewDurationStr(val float64, timeType string) string {
 		vs := strconv.FormatFloat(val, 'f', 1, 64)
 		s = fmt.Sprintf("%s%s", vs, "s")
 	}
+
 	return s
 }
 

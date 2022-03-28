@@ -14,9 +14,10 @@ import (
 //////////////////////////
 //DayTimeHelpper/DateTimeH.go
 //author = "Derek Tian"
-//Ver = 0.0.0.1
+//Ver = 0.0.0.2
 //make time = 3/19/2022 15:59
 // note = 常用的日期和时间中的函数和方法
+// (0.0.0.2)添加了GetNumToMode函数，作为获取第几周之类的方法
 /////////////////////////
 
 const (
@@ -47,7 +48,7 @@ func timeFormat(i ...interface{}) (F string) {
 		F = "2006-01-02 15:04:05"
 	case "YYYY-MM-DD HH24:MI", "YYYY-MM-DD HH:MI":
 		F = "2006-01-02 15:04"
-	case "YYYYMMDDHHMI":
+	case "YYYYMMDDHHMI", "YYYYMMDDHH24MI":
 		F = "200601021504"
 	case "YYYY-MM-DD HH24", "YYYY-MM-DD HH":
 		F = "2006-01-02 15"
@@ -95,20 +96,7 @@ func GetNewDate(sTime interface{}, timeType string, offset interface{}) time.Tim
 	}
 
 	var v2 float64
-	//v := reflect.ValueOf(offset)
-	//b := v.Kind()
-	//switch b {
-	//case reflect.Int:
-	//	//v1, _ = strconv.ParseFloat(fmt.Sprint(v), 64)
-	//	v2 = float64(v.Int())
-	//case reflect.Float64:
-	//	v2 = v.Float()
-	//default:
-	//	vs := reflect.ValueOf(offset)
-	//
-	//	oneT, _ := time.ParseDuration(fmt.Sprintf("%v", vs))
-	//	return t1.Add(oneT)
-	//}
+
 	switch OtherHelpper.GetValueType(offset) {
 	case "int":
 		v2 = float64(offset.(int))
@@ -125,7 +113,7 @@ func GetNewDate(sTime interface{}, timeType string, offset interface{}) time.Tim
 		i, _ := strconv.Atoi(fmt.Sprintf("%1.0f", v2))
 		return t1.AddDate(0, 0, i)
 	} else {
-		oneT, _ := time.ParseDuration(OtherHelpper.NewDurationStr(v2, timeType))
+		oneT, _ := time.ParseDuration(NewDurationStr(v2, timeType))
 		return t1.Add(oneT)
 	}
 
@@ -204,4 +192,70 @@ func main() {
 
 	//s1 := GetNewDate(time.Now(), "", -3*Week)
 	fmt.Println(s1.Format(timeFormat()))
+}
+
+// 2022-03-28 add
+
+func NewDurationStr(val float64, timeType string) string {
+	t := strings.ToUpper(timeType)
+	var s string
+	switch t {
+	case "D", "DAY":
+
+		vs := strconv.FormatFloat(val*24, 'f', 1, 64)
+		s = fmt.Sprintf("%s%s", vs, "h")
+	case "HOUR", "H":
+		vs := strconv.FormatFloat(val, 'f', 1, 64)
+		s = fmt.Sprintf("%s%s", vs, "h")
+	case "WEEK", "W":
+		vs := strconv.FormatFloat(val*24*7, 'f', 1, 64)
+		s = fmt.Sprintf("%s%s", vs, "h")
+	case "MIN", "MI":
+		vs := strconv.FormatFloat(val, 'f', 1, 64)
+		s = fmt.Sprintf("%s%s", vs, "m")
+	default:
+		vs := strconv.FormatFloat(val, 'f', 1, 64)
+		s = fmt.Sprintf("%s%s", vs, "s")
+	}
+
+	return s
+}
+
+type DateTrafficTo struct {
+}
+
+// GetNumToMode 添加根据输入的时间返回是一年中的第几周、天、小时、30分钟、15分钟(注意St只能接收YYYYMMDDHH24MISS格式的时间
+func (d DateTrafficTo) GetNumToMode(GetModel string, St ...interface{}) string {
+	defer func() {
+		err := recover()
+		if err != nil {
+			return
+		}
+	}()
+	var now time.Time
+	if St != nil {
+		now = StrToTime(St[0].(string), false)
+	} else {
+		now = time.Now()
+	}
+	var d1 int
+	switch strings.ToUpper(GetModel) {
+
+	case "DAY", "D":
+		return fmt.Sprintf("Day_%v", now.YearDay())
+	case "HOUR", "H":
+
+		return fmt.Sprintf("Hour_%v", (now.YearDay()-1)*24+now.Hour())
+	case "MIN15", "M15":
+		v := (now.YearDay()-1)*24*60 + now.Minute()
+		return fmt.Sprintf("M15_%d", v/15)
+	case "MIN30", "M30":
+		v := (now.YearDay()-1)*24*60 + now.Minute()
+		return fmt.Sprintf("M30_%d", v/30)
+	default:
+		//d1 = int(math.Ceil(float64(now.UTC().Day())) / 7.0)
+		_, d1 = now.ISOWeek()
+		return fmt.Sprintf("WEEk_%v", d1)
+	}
+
 }
