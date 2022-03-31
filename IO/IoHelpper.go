@@ -18,11 +18,26 @@ type FRead struct {
 	Fi   *os.File
 	Read *bufio.Reader
 }
+type FWead struct {
+	Fi    *os.File
+	Write *bufio.Writer
+}
 
-func (f *FRead) Rread(Fstr string) FRead {
-	f1, _ := FileHelpper.RFile(Fstr)
+var fh FileHelpper.FileH
+
+func (f *FRead) Rread(fp string) FRead {
+	fh = FileHelpper.FileH{}
+	f1, _ := fh.Open(fp)
 	f.Fi = f1
 
 	f.Read = bufio.NewReaderSize(f1, 4096*3)
+	return *f
+}
+func (f *FWead) Cread(fp string) FWead {
+	fh = FileHelpper.FileH{}
+	f1, _ := fh.OpenFile(fp)
+	f.Fi = f1
+
+	f.Write = bufio.NewWriterSize(f1, 4096*3)
 	return *f
 }

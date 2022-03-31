@@ -35,15 +35,18 @@ func timeFormat(i ...interface{}) (F string) {
 	/*
 		支持YYYY-MM-DD HH24:mi:ss 默认为YYYYMMDDHH24miss
 	*/
-	var iTime string
-	if len(i) > 0 {
-		iTime = fmt.Sprint(i[0]) // 通过fmt.Sprint 将传入的内容变成字符格式的部分,只获取第一个部分
-	} else {
-		iTime = fmt.Sprint(i)
-	}
+	//var iTime string
+	//if len(i) > 0 {
+	//	iTime = fmt.Sprint(i[0]) // 通过fmt.Sprint 将传入的内容变成字符格式的部分,只获取第一个部分
+	//} else {
+	//	iTime = fmt.Sprint(i)
+	//}
 
-	iTime = strings.ToUpper(iTime)
+	//iTime = strings.ToUpper(iTime)
+	iTime := strings.ToUpper(fmt.Sprint(i...))
 	switch iTime {
+	case "YYYY-MM-DD HH24:MI:SS.SSS", "YYYY-MM-DD HH:MI:SS.SSS":
+		F = "2006-01-02 15:04:05.999"
 	case "YYYY-MM-DD HH24:MI:SS", "YYYY-MM-DD HH:MI:SS":
 		F = "2006-01-02 15:04:05"
 	case "YYYY-MM-DD HH24:MI", "YYYY-MM-DD HH:MI":
@@ -71,9 +74,14 @@ func timeFormat(i ...interface{}) (F string) {
 }
 
 // GetNowStr 获取当前时间的str格式时间
-func GetNowStr() string {
+func GetNowStr(i ...interface{}) string {
 	curTime := time.Now()
-	return curTime.Format(timeFormat())
+	return curTime.Format(timeFormat(i...))
+	//if len(i) > 0 {
+	//	return curTime.Format(timeFormat(i[0]))
+	//}
+	//return curTime.Format(timeFormat())
+
 }
 
 // GetNewDate 获取新的时间值
@@ -132,13 +140,14 @@ func StrToTime(SrcTime string, IsUTC bool, TimeType ...interface{}) time.Time {
 		TimeType：可选输入，如果不输入的话将按照SrcTime的长度来进行默认的输入
 
 	*/
-	var t string
-	if len(TimeType) > 0 {
-		t = fmt.Sprint(TimeType[0])
-	} else {
-		t = fmt.Sprint(TimeType)
-	}
-	t = strings.ToUpper(t)
+	//var t string
+	//if len(TimeType) > 0 {
+	//	t = fmt.Sprint(TimeType[0])
+	//} else {
+	//	t = fmt.Sprint(TimeType)
+	//}
+	//t = strings.ToUpper(t)
+	t := strings.ToUpper(fmt.Sprint(TimeType...))
 	if OtherHelpper.IsNum(SrcTime) || len(TimeType) == 0 {
 		switch len(SrcTime) {
 		case 4:
@@ -221,6 +230,7 @@ func NewDurationStr(val float64, timeType string) string {
 	return s
 }
 
+// DateTrafficTo 从日期转换为第几周、天，小时的结构体方法
 type DateTrafficTo struct {
 }
 

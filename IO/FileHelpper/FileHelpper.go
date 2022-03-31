@@ -1,11 +1,13 @@
 package FileHelpper
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -29,13 +31,43 @@ const (
 )
 
 type FileM struct {
-	IsDir        bool
-	FileName     string
-	FileSizeByte int64
-	FileModTime  time.Time
+	IsDir          bool
+	FileName       string
+	FileSizeByte   int64
+	FileModTime    time.Time
+	FileCreateTime int64
+}
+type FileMRow struct {
+	FileM
+	FIleRows uint64
+}
+type FileMode uint32
+type FileH struct {
 }
 
-func RFile(strF string) (*os.File, bool) {
+// OpenFile Create 创建文件
+func (f FileH) OpenFile(fp string) (*os.File, bool) {
+	return f.OpenFileFalg(fp, CREATE|TRUNC|ROWR, 0644)
+}
+
+// OpenFileFalg CreateFalg 创建文件
+func (f FileH) OpenFileFalg(fp string, flag int, parm FileMode) (*os.File, bool) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			return
+		}
+	}()
+	file, err := os.OpenFile(fp, flag, os.FileMode(parm))
+	if err != nil {
+		fmt.Printf("[%s]  Return *File have error:%v", "CFileFleg", err)
+		return nil, false
+	}
+	return file, true
+}
+
+// Open RFile 读文件打开文件
+func (f FileH) Open(strF string) (*os.File, bool) {
 
 	file, err := os.Open(strF)
 	if err != nil {
@@ -45,49 +77,39 @@ func RFile(strF string) (*os.File, bool) {
 	return file, true
 }
 
-// CFile 根据传入的文件路径返回一个文件接口的指针（默认创建文件时使用）
-func CFile(strF string) (*os.File, bool) {
-	var parm os.FileMode
-	parm = 0766
-	file, err := os.OpenFile(strF, CREATE|TRUNC|ROWR, parm)
-	if err != nil {
-		fmt.Printf("[%s]  Return *File have error:%v", "CFile", err)
-		return nil, false
-	}
-	return file, true
-}
-
-// CFileFleg   根据传入的文件路径返回一个文件接口的指针（可以自定义对文件的操作方法）
-func CFileFleg(strF string, fleg int, parm os.FileMode) (*os.File, bool) {
-	file, err := os.OpenFile(strF, fleg, parm)
-	if err != nil {
-		fmt.Printf("[%s]  Return *File have error:%v", "CFileFleg", err)
-		return nil, false
-	}
-	return file, true
-}
-
-// FileClose 根据传入的文件接口指针关闭文件
-func FileClose(f *os.File) bool {
-	err := f.Close()
+// Close 关闭文件
+func (f FileH) Close(file *os.File) bool {
+	err := file.Close()
 	if err != nil {
 		return false
 	}
 	return true
 }
 
-// StatusFIle 根据传入的文件接口指针返回文件的基本信息
-func StatusFIle(f *os.File) (os.FileInfo, bool) {
-	fi, err := f.Stat()
+// FileStatusStr 获取文件信息（输入为字符串文件路径）
+func (f FileH) FileStatusStr(fp string) os.FileInfo {
+	f1, _ := f.Open(fp)
+	return f.FileStatus(f1)
+}
+
+// FileStatus 获取文件信息，文件指针
+func (f FileH) FileStatus(f1 *os.File) os.FileInfo {
+	defer func() {
+		err := recover()
+		if err != nil {
+			return
+		}
+	}()
+
+	fi, err := f1.Stat()
 	if err != nil {
-		fmt.Printf("[%s]  Return os.FileInfo have error:%v", "StatusFIle", err)
-		return nil, false
+		return nil
 	}
-	return fi, true
+	return fi
 }
 
 // GetPathInfo 根据输入的目录返回目录下文件的的信息，返回的结构体为FIleM类型
-func GetPathInfo(rootPath string) map[string]FileM {
+func (f FileH) GetPathInfo(rootPath string) map[string]FileM {
 	FileMap := make(map[string]FileM, 100)
 	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
 		var F FileM
@@ -109,23 +131,17 @@ func GetPathInfo(rootPath string) map[string]FileM {
 
 		}
 		FileMap[path] = F
-		//
-		//fmt.Println(path) //打印path信息
-		//fmt.Println(info.ModTime())
-		//fmt.Println(info.Name())
-
 		return nil
 	})
 	if err != nil {
 		fmt.Printf("[%s]  have error:%v", "GetPathInfo", err)
 		return nil
 	}
-
 	return FileMap
 }
 
 // DelFile 删除单一文件
-func DelFile(FileAbsPath string) bool {
+func (f FileH) DelFile(FileAbsPath string) bool {
 	err := os.Remove(FileAbsPath)
 	if err != nil {
 		return false
@@ -134,7 +150,7 @@ func DelFile(FileAbsPath string) bool {
 }
 
 // DelPath 删除带有文件的目录
-func DelPath(Path string) bool {
+func (f FileH) DelPath(Path string) bool {
 	err := os.RemoveAll(Path)
 	if err != nil {
 		return false
@@ -143,14 +159,14 @@ func DelPath(Path string) bool {
 }
 
 // DelFileFromPath 从目录中删除特定的文件
-func DelFileFromPath(Path, file string) bool {
+func (f FileH) DelFileFromPath(Path, file string) bool {
 	b := true
-	F := GetPathInfo(Path)
+	F := f.GetPathInfo(Path)
 	for k, v := range F {
 		va := strings.ToUpper(v.FileName)
 		vb := strings.ToUpper(file)
 		if strings.Contains(va, vb) {
-			b = DelFile(k)
+			b = f.DelFile(k)
 			if !b {
 				fmt.Printf("Del File :[%s] have error", k)
 			}
@@ -160,7 +176,7 @@ func DelFileFromPath(Path, file string) bool {
 }
 
 // MoveFile 文件移动/重命名
-func MoveFile(SrcP, DrcP string) bool {
+func (f FileH) MoveFile(SrcP, DrcP string) bool {
 	err := os.Rename(SrcP, DrcP)
 	if err != nil {
 		return false
@@ -169,7 +185,7 @@ func MoveFile(SrcP, DrcP string) bool {
 }
 
 // FileCopy 文件复制
-func FileCopy(Src, drc string) bool {
+func (f FileH) FileCopy(Src, drc string) bool {
 	in, err := os.Open(Src)
 	defer func(in *os.File) {
 		err := in.Close()
@@ -189,7 +205,7 @@ func FileCopy(Src, drc string) bool {
 }
 
 // FileCheck 判断文件是否存在并返回后缀
-func FileCheck(src string) (bool, string) {
+func (f FileH) FileCheck(src string) (bool, string) {
 	_, err := os.Stat(src)
 	exists := !os.IsNotExist(err)
 	if exists {
@@ -202,16 +218,78 @@ func FileCheck(src string) (bool, string) {
 }
 
 // CreatePath 目录的创建
-func CreatePath(path string) bool {
+func (f FileH) CreatePath(path string) bool {
 	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
 		return false
 	}
 	return true
 }
-func RextStr(s string) interface{} {
-	if stu, Ext := FileCheck(s); stu {
-		return Ext[1:]
+
+// RextStr 获取文件的后缀名
+func (f FileH) RextStr(s string) interface{} {
+	if stu, Ext := f.FileCheck(s); stu {
+		return strings.ToUpper(Ext[1:])
 	}
 	return nil
+}
+
+// FileInfoRStr 根据传入的文件路径返回带有文件行数的文件信息
+func (f FileH) FileInfoRStr(fp string) FileMRow {
+	Fsufx := f.RextStr(fp)
+	Fs := FileMRow{}
+	f1, _ := f.Open(fp)
+	if Fsufx == "CSV" || Fsufx == "TXT" || Fsufx == "LOG" {
+		Fs.FIleRows, _ = lineCounter(f1)
+	}
+
+	fin := f.FileStatus(f1)
+
+	Fs.IsDir = fin.IsDir()
+	Fs.FileName = fin.Name()
+	Fs.FileModTime = fin.ModTime()
+	Fs.FileSizeByte = fin.Size()
+	f.Close(f1)
+	return Fs
+}
+func (f FileH) FileInfoR(fp string, file *os.File) FileMRow {
+	Fsufx := f.RextStr(fp)
+	Fs := FileMRow{}
+
+	if Fsufx == "CSV" || Fsufx == "TXT" || Fsufx == "LOG" {
+		Fs.FIleRows, _ = lineCounter(file)
+	}
+	fin := f.FileStatus(file)
+	Fs.IsDir = fin.IsDir()
+	Fs.FileName = fin.Name()
+	Fs.FileModTime = fin.ModTime()
+	Fs.FileSizeByte = fin.Size()
+	switch runtime.GOOS {
+	case "windows":
+		wFileSys := fin.Sys()
+		fmt.Println(wFileSys)
+	case "linux":
+	}
+
+	return Fs
+}
+
+//===========================================
+func lineCounter(r io.Reader) (uint64, error) {
+	buf := make([]byte, 32*1024)
+	count := 0
+	lineSep := []byte{'\n'}
+
+	for {
+		c, err := r.Read(buf)
+		count += bytes.Count(buf[:c], lineSep)
+
+		switch {
+		case err == io.EOF:
+			return uint64(count), nil
+
+		case err != nil:
+			return 0, err
+		}
+	}
 }

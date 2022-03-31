@@ -27,12 +27,19 @@ type ConfigF struct {
 	FilePath string
 }
 
+var fh FileHelpper.FileH
+
+func init() {
+	fh = FileHelpper.FileH{}
+}
+
 // 读的方法，需要传入Key（A.B、A）的结构
 func (Cf ConfigF) Read(Key string) map[string]interface{} {
+
 	var mConfig = make(map[string]interface{}, 2)
 	//fmt.Println(Cf.FilePath)
 	//fmt.Println(Key)
-	if FileHelpper.RextStr(Cf.FilePath) == "" {
+	if fh.RextStr(Cf.FilePath) == "" {
 		fmt.Println("not file Config FIle!!!")
 		return mConfig
 	} else {
@@ -66,7 +73,7 @@ func (Cf ConfigF) Read(Key string) map[string]interface{} {
 
 // 写的方法
 func (Cf ConfigF) Write(m map[string]interface{}) bool {
-	if FileHelpper.RextStr(Cf.FilePath) != "" {
+	if fh.RextStr(Cf.FilePath) != "" {
 		viper.SetConfigFile(Cf.FilePath)
 		for k, v := range m {
 			viper.Set(k, v)
