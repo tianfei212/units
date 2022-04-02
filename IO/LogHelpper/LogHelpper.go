@@ -22,11 +22,11 @@ const (
 )
 
 // 定义日志输出方向
-const (
-	O_CONSOLE = 0x00000
-	O_FILE    = 0x00010
-	O_CHAN    = 0x00100
-)
+//const (
+//	O_CONSOLE = 0x00000
+//	O_FILE    = 0x00010
+//	O_CHAN    = 0x00100
+//)
 
 // Logger 定义日志结构体
 type logger struct {
@@ -72,7 +72,8 @@ type LoggerChan struct {
 }
 
 // NewLogFILE 完成构造函数
-func NewLogFILE(maxLogLevel string, F FileSet) *LoggerFile {
+//func NewLogFILE(maxLogLevel string, F FileSet) *LoggerFile {
+func NewLogFILE(maxLogLevel string, F FileSet) *Flog {
 	defer func() {
 		err := recover()
 		if err != nil {
@@ -88,14 +89,16 @@ func NewLogFILE(maxLogLevel string, F FileSet) *LoggerFile {
 		//IsOutTime:   true,
 		IsOutRowNum: true,
 	}
-	go writeLogFromChan()
-	//createPath(F.FilePath)
 
 	//fmt.Println("cc")
-	return &LoggerFile{
+	//return &LoggerFile{
+	//	FileSet: F,
+	//	logger:  lv,
+	//}
+	return &Flog{LoggerFile{
 		FileSet: F,
 		logger:  lv,
-	}
+	}}
 
 }
 

@@ -2,9 +2,7 @@ package OtherHelpper
 
 import (
 	"fmt"
-	"github.com/tianfei212/units/Sys/OtherHelpper/sortA"
 	"reflect"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -156,48 +154,3 @@ func GetValueType(a interface{}) string {
 //
 //	return m1
 //}
-
-func MapSort(m map[string]string, IsAsc, SortKey bool, sortFiredType string) map[string]string {
-
-	switch sortFiredType {
-	case "int64":
-		va := sortA.IntSlice{}
-		mp := make(map[int64]string, len(m))
-		if SortKey {
-			for k, v := range m {
-				vtmp, _ := strconv.ParseInt(k, 10, 64)
-				va = append(va, vtmp)
-				mp[vtmp] = v
-			}
-		} else {
-			for k, v := range m {
-				vtmp, _ := strconv.ParseInt(v, 10, 64)
-				va = append(va, vtmp)
-				mp[vtmp] = k
-			}
-		}
-		if !sort.IsSorted(va) {
-			sort.Sort(va)
-			mout := make(map[string]string, len(m))
-			for _, k := range va {
-				st := mp[k]
-				k1 := strconv.FormatInt(k, 10)
-				mout[k1] = st
-			}
-			if !IsAsc {
-				moutb := make(map[string]string, len(m))
-				for i := len(va) - 1; i >= 0; i-- {
-					fmt.Println(i, mp[va[i]])
-					//st := mp[i]
-					//k1 := strconv.FormatInt(i, 10)
-					//moutb[mp[va[i]]] = strconv.FormatInt(va[i], 10)
-					moutb[strconv.FormatInt(va[i], 10)] = mp[va[i]]
-				}
-				return moutb
-			}
-			return mout
-		}
-
-	}
-	return nil
-}

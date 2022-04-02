@@ -236,9 +236,10 @@ func (f FileH) RextStr(s string) interface{} {
 
 // FileInfoRStr 根据传入的文件路径返回带有文件行数的文件信息
 func (f FileH) FileInfoRStr(fp string) FileMRow {
-	Fsufx := f.RextStr(fp)
+	Fsufx := strings.ToUpper(fmt.Sprintf("%v", f.RextStr(fp)))
 	Fs := FileMRow{}
 	f1, _ := f.Open(fp)
+
 	if Fsufx == "CSV" || Fsufx == "TXT" || Fsufx == "LOG" {
 		Fs.FIleRows, _ = lineCounter(f1)
 	}

@@ -1,7 +1,7 @@
-package sortA
+package v_1_0
 
 //////////////////////////
-//Sys/OtherHelpper/sortA/sortInt64.go
+//Sys/OtherHelpper/SortA/sortInt64.go
 //author = "Derek Tian"
 //Ver = 0.0.0.1
 //make time = 3/30/2022 22:06

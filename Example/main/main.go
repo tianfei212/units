@@ -11,7 +11,6 @@ package main
 import (
 	"fmt"
 	"github.com/tianfei212/units/IO/LogHelpper"
-	DayTimeHelpper "github.com/tianfei212/units/Sys/DateTimeHelpper"
 	"time"
 )
 
@@ -38,7 +37,7 @@ func main() {
 	cha := make(chan string, 100)
 
 	go func() {
-		fmt.Println("start show chan log ")
+		//fmt.Println("start show chan log ")
 		for v := range cha {
 			fmt.Printf("From chan get %v\n", v)
 		}
@@ -47,43 +46,94 @@ func main() {
 	//Nlog.DEBUG("haha")
 }
 
+//type pxFileer []FileHelpper.FileMRow
+//
+//func TA() (f pxFileer) {
+//	for i := 0; i < 100; i++ {
+//		row := FileHelpper.FileMRow{
+//			FileM: FileHelpper.FileM{
+//				IsDir:          false,
+//				FileName:       fmt.Sprintf("%02d_log.log", i),
+//				FileSizeByte:   0,
+//				FileModTime:    time.Now(),
+//				FileCreateTime: 0,
+//			},
+//			FIleRows: 0,
+//		}
+//		time.Sleep(10)
+//		f = append(f, row)
+//	}
+//	row := FileHelpper.FileMRow{
+//		FileM: FileHelpper.FileM{
+//			IsDir:          false,
+//			FileName:       fmt.Sprintf("%02d_log.log", 10329848403),
+//			FileSizeByte:   0,
+//			FileModTime:    time.Now(),
+//			FileCreateTime: 0,
+//		},
+//		FIleRows: 0,
+//	}
+//	f = append(f, row)
+//	return f
+//}
 func a(lc chan string) {
+
+	//c1 := logsort.LogFileNameModifyTime{}
+	//cc := TA()
+	//c1.Asc(cc)
+	//fmt.Println(reflect.TypeOf(cc))
+	//for _, v := range cc {
+	//	fmt.Println(v)
+	//}
 	nf := LogHelpper.FileSet{
-		FilePath:       "./logs",
+		FilePath:       "o:/TMP/logs",
 		FileName:       "test.log",
-		ByModel:        LogHelpper.ByFileTime,
+		ByModel:        LogHelpper.BYFileSize,
 		TimeFormat:     "YYYYMMDDHHMI",
 		MaxFIleSize:    1,
-		MaxFIleSaveNum: 3,
-		MaxFileRows:    100,
+		MaxFIleSaveNum: 10,
+		MaxFileRows:    1000,
 	}
 	NlogF := LogHelpper.NewLogFILE("debug", nf)
-	NlogF.StartCheckFile(true)
+	NlogF.StartCheckFile()
+	//NlogF.StartCheckFile(true)
 	Nlog := LogHelpper.NewLogConsole("debug")
-	Nlog.DEBUG("cc")
-	a1 := make(map[string]int)
-	a1["cc1"] = 0
-	a1["cc2"] = 2
-	Nlog.DEBUG("%s %v", "ac", a1)
-	Nlog.INFO("info")
-	Nlog.ERROR("err")
-
+	//Nlog.DEBUG("cc")
+	//
+	//a1 := make(map[string]int)
+	//a1["cc1"] = 0
+	//a1["cc2"] = 2
+	//Nlog.DEBUG("%s %v", "ac", a1)
+	//Nlog.INFO("info")
+	//Nlog.ERROR("err")
+	//
 	NlogC := LogHelpper.NewLogChan("debug", lc)
-
-	for i := 0; i < 10000000000000; i++ {
+	//
+	for i := 0; i <= 1000000; i++ {
 		Nlog.ERROR("ERR:%d", i)
-		time.Sleep(1 * DayTimeHelpper.Min15 / 1400)
-		NlogF.ERROR("ERR vsql -h 10.166.35.91 -d vdb -U offline_user -w radcom -F '*' -At -o /OSRM/TMP/ua.csv -f /OSRM/TMP/b.sql:%d", i)
-		//NlogF.INFO("info:%d", i)
-		//NlogF.ERROR("err:%d", i)
+		time.Sleep(900 * time.Microsecond)
+		if i == 20 {
+			fmt.Println("a", i)
+		}
+		//fmt.Println("b:", i)
+		NlogF.DEBUG("wwwww:%d", i)
+		//NlogF.DEBUG("asdf:%d", i)
+		//NlogF.DEBUG("c1:%d", i)
+
+		NlogF.ERROR("这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试:%d", i)
+		NlogF.TRACE("这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试:%d", i)
+		NlogF.INFO("这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试这是测试:%d", i)
+		//	//NlogF.INFO("info:%d", i)
+		//	//NlogF.ERROR("err:%d", i)
 		NlogC.DEBUG("cc%d", i)
 		NlogC.INFO("cc%d", i)
 	}
-
-	//for i := 0; i <= 100000; i++ {
-	//	Nlog.DEBUG("%s:%d", "test", i)
-	//	time.Sleep(10 * time.Second)
-	//	fmt.Println("wwww")
-	//}
+	NlogF.End()
+	//
+	////for i := 0; i <= 100000; i++ {
+	////	Nlog.DEBUG("%s:%d", "test", i)
+	////	time.Sleep(10 * time.Second)
+	////	fmt.Println("wwww")
+	////}
 
 }
