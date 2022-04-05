@@ -13,22 +13,34 @@ import (
 /////////////////////////
 
 func (l *LoggerConsole) DEBUG(format string, a ...interface{}) {
-	fmt.Println(mLog(DEBUG, &l.logger, 3, conlog(format, a...)))
+	if msg := mLog(DEBUG, &l.logger, 3, conlog(format, a...)); msg != nil {
+		fmt.Println(msg)
+	}
+
 }
 func (l *LoggerConsole) TRACE(format string, a ...interface{}) {
-	fmt.Println(mLog(TRACE, &l.logger, 3, conlog(format, a...)))
+	if msg := mLog(TRACE, &l.logger, 3, conlog(format, a...)); msg != nil {
+		fmt.Println(msg)
+	}
 }
 
 func (l *LoggerConsole) INFO(format string, a ...interface{}) {
-	fmt.Println(smalllog(INFO, &l.logger, format, a...))
-
+	if msg := mLog(INFO, &l.logger, 3, conlog(format, a...)); msg != nil {
+		fmt.Println(msg)
+	}
 }
 func (l *LoggerConsole) WARNING(format string, a ...interface{}) {
-	fmt.Println(smalllog(WARNING, &l.logger, format, a...))
+	if msg := mLog(WARNING, &l.logger, 3, conlog(format, a...)); msg != nil {
+		fmt.Println(msg)
+	}
 }
 func (l *LoggerConsole) ERROR(format string, a ...interface{}) {
-	fmt.Println(smalllog(ERROR, &l.logger, format, a...))
+	if msg := mLog(ERROR, &l.logger, 3, conlog(format, a...)); msg != nil {
+		fmt.Println(msg)
+	}
 }
 func (l *LoggerConsole) FATAL(format string, a ...interface{}) {
-	fmt.Println(smalllog(FATAL, &l.logger, format, a...))
+	if msg := mLog(FATAL, &l.logger, 3, conlog(format, a...)); msg != nil {
+		fmt.Println(msg)
+	}
 }

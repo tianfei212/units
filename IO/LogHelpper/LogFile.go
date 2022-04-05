@@ -96,10 +96,11 @@ func (f LoggerFile) StartCheckFile() {
 	fmt.Println("首次启动。。。。。。。")
 	b := fh.CreatePath(path.Join(f.FilePath))
 	fmt.Println("创建:", b)
+	dtime := DayTimeHelpper.RunTDStr(f.TimeFormat)
 	b1 := IO.FWead{}
 	var Fname string
 	if f.ByModel == ByFileTime {
-		Fname = fmt.Sprintf("%s_%s", DayTimeHelpper.GetNowStr(f.TimeFormat), f.FileName)
+		Fname = fmt.Sprintf("%s_%s", dtime.Now(), f.FileName)
 	} else {
 		Fname = f.FileName
 	}
@@ -141,12 +142,13 @@ func (F Flog) getFileInfo() (FS []filehlper.FileMRow) {
 }
 func (F Flog) CreateF() {
 	fmt.Println("日志文件目录创建。。。。。。。")
+	dtime := DayTimeHelpper.RunTDStr(F.TimeFormat)
 	b := F.createPath(F.FilePath)
 	fmt.Println("创建:", b)
 	b1 := IO.FWead{}
 	var Fname string
 	if F.ByModel == ByFileTime {
-		Fname = fmt.Sprintf("%s_%s", DayTimeHelpper.GetNowStr(F.TimeFormat), F.FileName)
+		Fname = fmt.Sprintf("%s_%s", dtime.Now(), F.FileName)
 	} else {
 		Fname = F.FileName
 	}
@@ -326,8 +328,8 @@ func (F Flog) fSpilt(fname string) {
 			F.CreateF()
 		}
 	case ByFileTime:
-
-		natime := DayTimeHelpper.GetNowStr(F.TimeFormat)
+		dtime := DayTimeHelpper.RunTDStr(F.TimeFormat)
+		natime := dtime.Now()
 		fileNameTime := strings.Split(path.Base(wl.fileName), "_")[0]
 		if natime != fileNameTime {
 			fmt.Println("按照文件时间分割！！！！")
@@ -351,41 +353,54 @@ func (F Flog) fSpilt(fname string) {
 }
 func (F Flog) DEBUG(format string, a ...interface{}) {
 	F.fSpilt(wl.fileName)
-	s1 := fmt.Sprintf("%s", mLog(DEBUG, &F.logger, 3, conlog(format, a...)))
-	//fmt.Println("write input:", s1)
-	wriLogChan <- s1
+	if mes := mLog(DEBUG, &F.logger, 3, conlog(format, a...)); mes != nil {
+		s1 := fmt.Sprintf("%s", mes)
+		//fmt.Println("write input:", s1)
+		wriLogChan <- s1
+	}
 
 }
 
 func (F Flog) TRACE(format string, a ...interface{}) {
 	F.fSpilt(wl.fileName)
-	s1 := fmt.Sprintf("%s", mLog(TRACE, &F.logger, 3, conlog(format, a...)))
-	//fmt.Println("write input:", s1)
-	wriLogChan <- s1
+	if mes := mLog(TRACE, &F.logger, 3, conlog(format, a...)); mes != nil {
+		s1 := fmt.Sprintf("%s", mes)
+		//fmt.Println("write input:", s1)
+		wriLogChan <- s1
+	}
 }
 func (F Flog) INFO(format string, a ...interface{}) {
 	F.fSpilt(wl.fileName)
-	s1 := fmt.Sprintf("%s", mLog(INFO, &F.logger, 3, conlog(format, a...)))
-	//fmt.Println("write input:", s1)
-	wriLogChan <- s1
+	if mes := mLog(INFO, &F.logger, 3, conlog(format, a...)); mes != nil {
+		s1 := fmt.Sprintf("%s", mes)
+		//fmt.Println("write input:", s1)
+		wriLogChan <- s1
+	}
+
 }
 func (F Flog) WARNING(format string, a ...interface{}) {
 	F.fSpilt(wl.fileName)
-	s1 := fmt.Sprintf("%s", mLog(WARNING, &F.logger, 3, conlog(format, a...)))
-	//fmt.Println("write input:", s1)
-	wriLogChan <- s1
+	if mes := mLog(WARNING, &F.logger, 3, conlog(format, a...)); mes != nil {
+		s1 := fmt.Sprintf("%s", mes)
+		//fmt.Println("write input:", s1)
+		wriLogChan <- s1
+	}
 
 }
 func (F Flog) ERROR(format string, a ...interface{}) {
 	F.fSpilt(wl.fileName)
-	s1 := fmt.Sprintf("%s", mLog(ERROR, &F.logger, 3, conlog(format, a...)))
-	//fmt.Println("write input:", s1)
-	wriLogChan <- s1
+	if mes := mLog(ERROR, &F.logger, 3, conlog(format, a...)); mes != nil {
+		s1 := fmt.Sprintf("%s", mes)
+		//fmt.Println("write input:", s1)
+		wriLogChan <- s1
+	}
 }
 func (F Flog) FATAL(format string, a ...interface{}) {
 	F.fSpilt(wl.fileName)
-	s1 := fmt.Sprintf("%s", mLog(FATAL, &F.logger, 3, conlog(format, a...)))
-	//fmt.Println("write input:", s1)
-	wriLogChan <- s1
+	if mes := mLog(FATAL, &F.logger, 3, conlog(format, a...)); mes != nil {
+		s1 := fmt.Sprintf("%s", mes)
+		//fmt.Println("write input:", s1)
+		wriLogChan <- s1
+	}
 
 }

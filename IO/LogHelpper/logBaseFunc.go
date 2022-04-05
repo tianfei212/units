@@ -15,12 +15,17 @@ import (
 //make time = 3/28/2022 20:50
 // note =
 /////////////////////////
+var dtime DayTimeHelpper.TimeDateStr
 
+func init() {
+	dtime = DayTimeHelpper.RunTDStr("YYYY-MM-DD HH24:MI:SS.sss")
+}
 func mLog(lv LogLevel, l *logger, logv int, msg string) interface{} {
 
 	if l.enable(lv) {
 		file, funcName, line := getInfo(logv)
-		time := DayTimeHelpper.GetNowStr("YYYY-MM-DD HH24:MI:SS.sss")
+
+		time := dtime.Now()
 		//msg := fmt.Sprintf(format, a...)
 
 		if l.IsOutRowNum {
@@ -93,5 +98,6 @@ func smalllog(lv LogLevel, l *logger, format string, a ...interface{}) interface
 }
 
 func conlog(format string, a ...interface{}) string {
+	//fmt.Println(fmt.Sprintf(format, a...))
 	return fmt.Sprintf(format, a...)
 }

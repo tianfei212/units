@@ -11,10 +11,18 @@ package main
 import (
 	"fmt"
 	"github.com/tianfei212/units/IO/LogHelpper"
+	DayH "github.com/tianfei212/units/Sys/DateTimeHelpper"
 	"time"
 )
 
 func main() {
+	c := DayH.RunTD("", DayH.StringS).(DayH.TimeDateStr)
+	b := c.Now()
+	fmt.Println(b)
+	//fmt.Println(TimeH.GetNewDate("2020-10-10 10:10:10", "Day", 10))
+	//c := TimeH.TimeStr("2020/10/10 10:10:10")
+	//fmt.Println(c.GetFormat())
+
 	// this is main function
 	//c := RwConfig.ConfigF{FilePath: "o:/TEMP/a3.json"}
 	//a := c.Read("mysql")
@@ -30,19 +38,19 @@ func main() {
 	//b := c.Write(m1)
 	//fmt.Println(b)
 	// time try
-	//Dat := DayTimeHelpper.DateTrafficTo{}
+	//Dat := TimeH.DateTrafficTo{}
 	//s := Dat.GetNumToMode("m15", "20220328153031")
 	//fmt.Println(s)
 	//logger test
-	cha := make(chan string, 100)
-
-	go func() {
-		//fmt.Println("start show chan log ")
-		for v := range cha {
-			fmt.Printf("From chan get %v\n", v)
-		}
-	}()
-	a(cha)
+	//cha := make(chan string, 100)
+	//
+	//go func() {
+	//	//fmt.Println("start show chan log ")
+	//	for v := range cha {
+	//		fmt.Printf("From chan get %v\n", v)
+	//	}
+	//}()
+	//a(cha)
 	//Nlog.DEBUG("haha")
 }
 
