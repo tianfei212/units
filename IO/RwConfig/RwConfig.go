@@ -4,7 +4,7 @@ import "C"
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"github.com/tianfei212/units/v1.2/IO/FileHelpper"
+	"github.com/tianfei212/units/IO/FileHelpper"
 	"strings"
 )
 

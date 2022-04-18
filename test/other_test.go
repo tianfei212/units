@@ -2,9 +2,9 @@ package test
 
 import (
 	"fmt"
-	filehlper "github.com/tianfei212/units/v1.2/IO/FileHelpper"
-	"github.com/tianfei212/units/v1.2/Sys/OtherHelpper"
-	logS "github.com/tianfei212/units/v1.2/Sys/OtherHelpper/SortA/LogFileSort"
+	filehlper "github.com/tianfei212/units/IO/FileHelpper"
+	"github.com/tianfei212/units/Sys/OtherHelpper"
+	logS "github.com/tianfei212/units/Sys/OtherHelpper/SortA/LogFileSort"
 	"strings"
 	"testing"
 )

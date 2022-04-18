@@ -2,7 +2,7 @@ package DayTimeHelpper
 
 import (
 	"fmt"
-	"github.com/tianfei212/units/v1.2/Sys/OtherHelpper"
+	"github.com/tianfei212/units/Sys/OtherHelpper"
 	"reflect"
 	"time"
 )

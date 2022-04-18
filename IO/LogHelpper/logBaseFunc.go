@@ -3,7 +3,7 @@ package LogHelpper
 import (
 	"errors"
 	"fmt"
-	DayTimeHelpper2 "github.com/tianfei212/units/v1.2/Sys/DateTimeHelpper"
+	"github.com/tianfei212/units/Sys/DateTimeHelpper"
 	"runtime"
 	"strings"
 )
@@ -15,10 +15,10 @@ import (
 //make time = 3/28/2022 20:50
 // note =
 /////////////////////////
-var dtime DayTimeHelpper2.TimeDateStr
+var dtime DayTimeHelpper.TimeDateStr
 
 func init() {
-	dtime = DayTimeHelpper2.RunTDStr("YYYY-MM-DD HH24:MI:SS.sss")
+	dtime = DayTimeHelpper.RunTDStr("YYYY-MM-DD HH24:MI:SS.sss")
 }
 func mLog(lv LogLevel, l *logger, logv int, msg string) interface{} {
 

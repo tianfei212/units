@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	rconfig "github.com/tianfei212/units/v1.2/IO/RwConfig"
+	rconfig "github.com/tianfei212/units/IO/RwConfig"
 	"testing"
 )
 

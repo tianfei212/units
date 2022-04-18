@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	logh "github.com/tianfei212/units/v1.2/IO/LogHelpper"
+	logh "github.com/tianfei212/units/IO/LogHelpper"
 	"testing"
 	"time"
 )

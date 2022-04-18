@@ -2,10 +2,10 @@ package LogHelpper
 
 import (
 	"fmt"
-	"github.com/tianfei212/units/v1.2/IO"
-	filehlper "github.com/tianfei212/units/v1.2/IO/FileHelpper"
-	"github.com/tianfei212/units/v1.2/Sys/DateTimeHelpper"
-	logsort "github.com/tianfei212/units/v1.2/Sys/OtherHelpper/SortA/LogFileSort"
+	"github.com/tianfei212/units/IO"
+	filehlper "github.com/tianfei212/units/IO/FileHelpper"
+	"github.com/tianfei212/units/Sys/DateTimeHelpper"
+	logsort "github.com/tianfei212/units/Sys/OtherHelpper/SortA/LogFileSort"
 	"path"
 	"sort"
 	"strconv"
@@ -96,7 +96,7 @@ func (f LoggerFile) StartCheckFile() {
 	fmt.Println("首次启动。。。。。。。")
 	b := fh.CreatePath(path.Join(f.FilePath))
 	fmt.Println("创建:", b)
-	dtime := DayTimeHelpper.RunTDStr(f.TimeFormat)
+	dtime := DayTimeHelpper.DayTimeHelpper.RunTDStr(f.TimeFormat)
 	b1 := IO.FWead{}
 	var Fname string
 	if f.ByModel == ByFileTime {

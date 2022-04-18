@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	D "github.com/tianfei212/units/v1.2/Sys/DateTimeHelpper"
+	D "github.com/tianfei212/units/Sys/DateTimeHelpper"
 	"testing"
 	"time"
 )

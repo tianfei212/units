@@ -2,7 +2,7 @@ package IO
 
 import (
 	"bufio"
-	"github.com/tianfei212/units/v1.2/IO/FileHelpper"
+	"github.com/tianfei212/units/IO/FileHelpper"
 	"os"
 )
 

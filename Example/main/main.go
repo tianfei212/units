@@ -10,13 +10,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/tianfei212/units/v1.2/IO/LogHelpper"
-	"github.com/tianfei212/units/v1.2/Sys/DateTimeHelpper"
+	"github.com/tianfei212/units/IO/LogHelpper"
+	"github.com/tianfei212/units/Sys/DateTimeHelpper"
 	"time"
 )
 
 func main() {
-	c := DayTimeHelpper.RunTD("", DayTimeHelpper.StringS).(DayTimeHelpper.TimeDateStr)
+	c := DayTimeHelpper.RunTD("", DayTimeHelpper.StringS).(DayTimeHelpper.DayTimeHelpper)
 	b := c.Now()
 	fmt.Println(b)
 	//fmt.Println(TimeH.GetNewDate("2020-10-10 10:10:10", "Day", 10))
