@@ -178,7 +178,7 @@ package test
 
 import (
 	"fmt"
-	cmd "github.com/tianfei212/units/v1.2/Sys/RunSystemCmd"
+	cmd "github.com/tianfei212/units/Sys/RunSystemCmd"
 	"testing"
 )
 

@@ -16,6 +16,6 @@ import (
 
 func TestCmd(t *testing.T) {
 	// this is main function
-	b := cmd.OsCommandExec("dir")
+	b := cmd.OsCommandExec("dir c:")
 	fmt.Println(b)
 }

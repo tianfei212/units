@@ -96,7 +96,8 @@ func (f LoggerFile) StartCheckFile() {
 	fmt.Println("首次启动。。。。。。。")
 	b := fh.CreatePath(path.Join(f.FilePath))
 	fmt.Println("创建:", b)
-	dtime := DayTimeHelpper.DayTimeHelpper.RunTDStr(f.TimeFormat)
+
+	dtime := DayTimeHelpper.RunTDStr(f.TimeFormat)
 	b1 := IO.FWead{}
 	var Fname string
 	if f.ByModel == ByFileTime {
