@@ -2,8 +2,9 @@ package test
 
 import (
 	"fmt"
-	filehlper "github.com/tianfei212/units/IO/FileHelpper"
-	logS "github.com/tianfei212/units/Sys/OtherHelpper/SortA/LogFileSort"
+	filehlper "github.com/tianfei212/units/v1.2/IO/FileHelpper"
+	"github.com/tianfei212/units/v1.2/Sys/OtherHelpper"
+	logS "github.com/tianfei212/units/v1.2/Sys/OtherHelpper/SortA/LogFileSort"
 	"strings"
 	"testing"
 )
@@ -15,10 +16,6 @@ import (
 //make time = 4/5/2022 10:54
 // note =
 /////////////////////////
-
-import (
-	"github.com/tianfei212/units/Sys/OtherHelpper"
-)
 
 type FileSet struct {
 	FilePath       string

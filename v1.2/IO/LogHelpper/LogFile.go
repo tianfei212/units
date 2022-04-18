@@ -2,10 +2,10 @@ package LogHelpper
 
 import (
 	"fmt"
-	"github.com/tianfei212/units/IO"
-	filehlper "github.com/tianfei212/units/IO/FileHelpper"
-	DayTimeHelpper "github.com/tianfei212/units/Sys/DateTimeHelpper"
-	logsort "github.com/tianfei212/units/Sys/OtherHelpper/SortA/LogFileSort"
+	"github.com/tianfei212/units/v1.2/IO"
+	filehlper "github.com/tianfei212/units/v1.2/IO/FileHelpper"
+	"github.com/tianfei212/units/v1.2/Sys/DateTimeHelpper"
+	logsort "github.com/tianfei212/units/v1.2/Sys/OtherHelpper/SortA/LogFileSort"
 	"path"
 	"sort"
 	"strconv"

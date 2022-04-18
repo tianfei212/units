@@ -2,19 +2,9 @@ package test
 
 import (
 	"fmt"
+	D "github.com/tianfei212/units/v1.2/Sys/DateTimeHelpper"
 	"testing"
 	"time"
-)
-
-//////////////////////////
-//test/time_test.go
-//author = "Derek Tian"
-//Ver = 0.0.0.1
-//make time = 4/4/2022 15:04
-// note =
-/////////////////////////
-import (
-	D "github.com/tianfei212/units/Sys/DateTimeHelpper"
 )
 
 func TestSum(t *testing.T) {

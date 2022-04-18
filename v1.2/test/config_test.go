@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	rconfig "github.com/tianfei212/units/v1.2/IO/RwConfig"
 	"testing"
 )
 
@@ -13,8 +14,6 @@ import (
 // note =
 /////////////////////////
 
-import rconfig "github.com/tianfei212/units/IO/RwConfig"
-
 func TestConfig(t *testing.T) {
 	// this is main function
 	fmt.Println("写配置文件")
@@ -24,7 +23,7 @@ func TestConfig(t *testing.T) {
 	cc["ccc1.bbb"] = "casdt"
 	b.Write(cc)
 	fmt.Println("读配置文件")
-	b := rconfig.ConfigF{FilePath: "o:/tmp/1.json"}
+	b = rconfig.ConfigF{FilePath: "o:/tmp/1.json"}
 	cs := b.Read("ccc1")
 	fmt.Println(cs)
 }

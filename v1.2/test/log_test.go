@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	logh "github.com/tianfei212/units/v1.2/IO/LogHelpper"
 	"testing"
 	"time"
 )
@@ -13,8 +14,6 @@ import (
 //make time = 4/5/2022 09:50
 // note =
 /////////////////////////
-
-import logh "github.com/tianfei212/units/IO/LogHelpper"
 
 func TestLog(t *testing.T) {
 	//d1 := D.RunTDStr("")
