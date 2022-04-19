@@ -197,3 +197,30 @@ func TestCmd(t *testing.T) {
 }
 
 ```
+### 支持多参数的执行方法
+```go
+package test
+
+import (
+	"fmt"
+	cmd "github.com/tianfei212/units/Sys/RunSystemCmd"
+	"testing"
+)
+
+//////////////////////////
+//test/cmd_test.go
+//author = "Derek Tian"
+//Ver = 0.0.0.1
+//make time = 4/18/2022 12:11
+// note =
+/////////////////////////
+
+func TestCmd(t *testing.T) {
+	
+	a1 := []string{"-h", "XXX.XXX.XXX.XXX", "-d", "vdb", "-U", "XXXX", "-w", "XXXX", "-c", "sql"}
+
+	ca := cmd.OsCommandExPar("vsql", a1)
+	fmt.Println(ca)
+}
+
+```
