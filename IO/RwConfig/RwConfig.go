@@ -1,6 +1,5 @@
 package RwConfig
 
-import "C"
 import (
 	"fmt"
 	"github.com/spf13/viper"
