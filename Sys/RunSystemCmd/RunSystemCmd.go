@@ -3,6 +3,8 @@ package RunSystemCmd
 import (
 	"fmt"
 	"golang.org/x/text/encoding/simplifiedchinese"
+	"io/ioutil"
+	"log"
 	"os/exec"
 	"runtime"
 )
@@ -58,4 +60,29 @@ func OsCommandExec(minglingAndCanshu string) string {
 		fmt.Printf("%s\n", err.Error())
 	}
 	return fmt.Sprintf("%s\n", convertByte2String(stdoutStderr, zifuji))
+}
+
+func OsCommandExPar(Cmd string, P []string) string {
+	//var zifuji charset
+	var cmd *exec.Cmd
+	cmd = exec.Command(Cmd, P...)
+	fmt.Println(cmd)
+	if stOut, err := cmd.StdoutPipe(); err != nil {
+		fmt.Println(err)
+	} else {
+		//defer stOut.Close()
+		if err1 := cmd.Start(); err != nil {
+			log.Fatal(err1)
+		}
+		if opBytes, err := ioutil.ReadAll(stOut); err != nil { // 读取输出结果    对象
+
+			log.Fatal(err)
+
+		} else {
+
+			log.Println("stat:", string(opBytes))
+			return string(opBytes)
+		}
+	}
+	return ""
 }
