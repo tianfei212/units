@@ -80,7 +80,7 @@ func OsCommandExPar(Cmd string, P []string) string {
 
 		} else {
 
-			log.Println("stat:", string(opBytes))
+			//log.Println("stat:", string(opBytes))
 			return string(opBytes)
 		}
 	}
