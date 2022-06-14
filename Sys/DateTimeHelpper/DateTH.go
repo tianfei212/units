@@ -125,9 +125,9 @@ func (T TimeH) Now() string {
 
 //下面的部分将转换时间到timestamp时间
 const (
-	sec int = iota
-	msec
-	nsec
+	Sec int = iota
+	Msec
+	Nsec
 )
 
 func (T TimeH) StringToTimeStamp(src string, timestampType int) (int64, error) {
@@ -145,12 +145,12 @@ func (T TimeH) StringToTimeStamp(src string, timestampType int) (int64, error) {
 			return res, err
 		}
 		switch timestampType {
-		case sec:
+		case Sec:
 			res = t1.Unix()
-		case msec:
+		case Msec:
 			res = t1.UnixMilli() //t1.UnixNano() / 1e6
 
-		case nsec:
+		case Nsec:
 			res = t1.UnixNano()
 		}
 	}
@@ -167,11 +167,11 @@ func (T TimeH) TimeToTimeStamp(src time.Time, timestampType int) (int64, error) 
 	res := int64(0)
 
 	switch timestampType {
-	case sec:
+	case Sec:
 		res = src.Unix()
-	case msec:
+	case Msec:
 		res = src.UnixMilli() //t1.UnixNano() / 1e6
-	case nsec:
+	case Nsec:
 		res = src.UnixNano()
 	}
 
