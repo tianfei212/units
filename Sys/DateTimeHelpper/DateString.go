@@ -16,7 +16,7 @@ import (
 /////////////////////////
 
 type TimeDateStr struct {
-	timeH
+	TimeH
 }
 
 func (T TimeDateStr) ToTime(SrcTime string, IsUTC bool) time.Time {

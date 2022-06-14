@@ -69,7 +69,7 @@ func (T TFormat) Format() string {
 }
 
 // TimeH 定义基类
-type timeH struct {
+type TimeH struct {
 	TFormat string
 }
 
@@ -95,7 +95,7 @@ func RunTDStr(Format string) TimeDateStr {
 
 	vf := TFormat(Format)
 
-	return TimeDateStr{timeH{TFormat: vf.Format()}}
+	return TimeDateStr{TimeH{TFormat: vf.Format()}}
 
 }
 
@@ -104,7 +104,7 @@ func RunTDtime(Format string) TimeDate {
 
 	vf := TFormat(Format)
 
-	return TimeDate{timeH{TFormat: vf.Format()}}
+	return TimeDate{TimeH{TFormat: vf.Format()}}
 
 }
 func RunTD(Format string, Ti int) interface{} {
@@ -117,7 +117,7 @@ func RunTD(Format string, Ti int) interface{} {
 }
 
 // Now 基类中的获取当前时间的方法
-func (T timeH) Now() string {
+func (T TimeH) Now() string {
 	curTime := time.Now()
 
 	return curTime.Format(TFormat(T.TFormat).Format())
@@ -130,7 +130,7 @@ const (
 	nsec
 )
 
-func (T timeH) StringToTimeStamp(src string, timestampType int) (int64, error) {
+func (T TimeH) StringToTimeStamp(src string, timestampType int) (int64, error) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println("str to timestamp have error:", err)
@@ -157,7 +157,7 @@ func (T timeH) StringToTimeStamp(src string, timestampType int) (int64, error) {
 
 	return res, nil
 }
-func (T timeH) TimeToTimeStamp(src time.Time, timestampType int) (int64, error) {
+func (T TimeH) TimeToTimeStamp(src time.Time, timestampType int) (int64, error) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println("str to timestamp have error:", err)

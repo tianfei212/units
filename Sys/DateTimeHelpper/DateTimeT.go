@@ -16,7 +16,7 @@ import (
 /////////////////////////
 
 type TimeDate struct {
-	timeH
+	TimeH
 }
 
 // NewTime
