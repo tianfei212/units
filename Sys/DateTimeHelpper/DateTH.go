@@ -3,6 +3,7 @@ package DayTimeHelpper
 //package main
 
 import (
+	"fmt"
 	"strings"
 	"time"
 )
@@ -10,10 +11,11 @@ import (
 //////////////////////////
 //DayTimeHelpper/DateTimeH.go
 //author = "Derek Tian"
-//Ver = 0.0.0.2
+//Ver = 0.0.0.21
 //make time = 3/19/2022 15:59
 // note = 常用的日期和时间中的函数和方法
 // (0.0.0.2)添加了GetNumToMode函数，作为获取第几周之类的方法
+// (0.0.0.21)添加字符串和时间值转时间戳的方法，修改了时间格式的bug
 /////////////////////////
 
 // 计算时间偏移量时用到的固定预设值
@@ -53,7 +55,7 @@ func (T TFormat) Format() string {
 		stimeF = strings.ReplaceAll(stimeF, "MM", "01")
 		stimeF = strings.ReplaceAll(stimeF, "DD", "02")
 		if strings.Contains(stimeF, "HH24") {
-			stimeF = strings.ReplaceAll(stimeF, "HH24", "03")
+			stimeF = strings.ReplaceAll(stimeF, "HH24", "15")
 		} else {
 			stimeF = strings.ReplaceAll(stimeF, "HH", "03")
 		}
@@ -68,7 +70,7 @@ func (T TFormat) Format() string {
 
 // TimeH 定义基类
 type timeH struct {
-	tDformat string
+	TFormat string
 }
 
 // 时间函数的基础接口
@@ -93,7 +95,7 @@ func RunTDStr(Format string) TimeDateStr {
 
 	vf := TFormat(Format)
 
-	return TimeDateStr{timeH{tDformat: vf.Format()}}
+	return TimeDateStr{timeH{TFormat: vf.Format()}}
 
 }
 
@@ -102,7 +104,7 @@ func RunTDtime(Format string) TimeDate {
 
 	vf := TFormat(Format)
 
-	return TimeDate{timeH{tDformat: vf.Format()}}
+	return TimeDate{timeH{TFormat: vf.Format()}}
 
 }
 func RunTD(Format string, Ti int) interface{} {
@@ -117,5 +119,61 @@ func RunTD(Format string, Ti int) interface{} {
 // Now 基类中的获取当前时间的方法
 func (T timeH) Now() string {
 	curTime := time.Now()
-	return curTime.Format(T.tDformat)
+
+	return curTime.Format(TFormat(T.TFormat).Format())
+}
+
+//下面的部分将转换时间到timestamp时间
+const (
+	sec int = iota
+	msec
+	nsec
+)
+
+func (T timeH) StringToTimeStamp(src string, timestampType int) (int64, error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("str to timestamp have error:", err)
+			return
+		}
+	}()
+	res := int64(0)
+	if src != "" {
+		timeFor := TFormat("yyyy-mm-dd HH24:mi:ss").Format()
+		t1, err := time.Parse(timeFor, src)
+		if err != nil {
+			return res, err
+		}
+		switch timestampType {
+		case sec:
+			res = t1.Unix()
+		case msec:
+			res = t1.UnixMilli() //t1.UnixNano() / 1e6
+
+		case nsec:
+			res = t1.UnixNano()
+		}
+	}
+
+	return res, nil
+}
+func (T timeH) TimeToTimeStamp(src time.Time, timestampType int) (int64, error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("str to timestamp have error:", err)
+			return
+		}
+	}()
+	res := int64(0)
+
+	switch timestampType {
+	case sec:
+		res = src.Unix()
+	case msec:
+		res = src.UnixMilli() //t1.UnixNano() / 1e6
+	case nsec:
+		res = src.UnixNano()
+	}
+
+	return res, nil
 }

@@ -22,10 +22,10 @@ type TimeDateStr struct {
 func (T TimeDateStr) ToTime(SrcTime string, IsUTC bool) time.Time {
 	if IsUTC {
 
-		a, _ := time.Parse(T.tDformat, SrcTime)
+		a, _ := time.Parse(T.TFormat, SrcTime)
 		return a
 	} else {
-		a, _ := time.ParseInLocation(T.tDformat, SrcTime, time.Local)
+		a, _ := time.ParseInLocation(T.TFormat, SrcTime, time.Local)
 		return a
 	}
 }
